@@ -1,20 +1,27 @@
 import Form from "../baseComponents/gui/form/Form";
 import LabelInput from "../baseComponents/gui/form/LabelInput";
 import { formInputs } from "../layouts/options/LabalInputsOptions";
-import axios from "axios";
+import { addFormData } from "../../api/user";
+import requests from "../../redux/reducer/requests";
+import { addFormPending } from "../../redux/reducer/requests";
+import { useSelector, useDispatch } from "react-redux";
 
 export default function FormLayout() {
-  let test = { text: "someText" };
+  //const dispatch = useDispatch();
   const handleSubmit = (prop) => {
-    // axios.get("api/hello").then((resp) => {
-    //   console.log(resp.data);
-    // });
-    axios
-      .post("api/hello", test)
-      .then((result) => {
-        console.log(result.data);
+    const formInputs = {
+      name: prop.name,
+      password: prop.password,
+      success: true,
+    };
+    addFormData(formInputs)
+      .then((resp) => {
+        console.log(resp);
+        // dispatch(addFormPending());
       })
-      .catch((error) => console.log(error.response.data));
+      .catch((error) => {
+        //console.log(error);
+      });
   };
 
   return (
