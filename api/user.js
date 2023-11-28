@@ -28,8 +28,8 @@ export function logout() {
   return post("/user/logout").then(saveAuth);
 }
 
-export function addFormData(data) {
-  return post("/hello", data).then(saveAuth);
+export function sendFormData(data) {
+  return post("/sendFormData", data).then(saveAuth);
 }
 
 function saveAuth(data) {

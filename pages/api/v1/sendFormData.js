@@ -4,6 +4,8 @@ export default async function inputsHandler(req, res) {
   if (req.method === "GET") {
     res.status(200).json({ message: "GET request" });
   } else if (req.method === "POST") {
-    res.status(200).send({ data: { name, password }, success });
+    if ((name.toLowerCase() === "эдик")||(name.toLowerCase() === "вася")) {
+      res.status(200).send({ data: { name } });
+    } else res.status(200).send({ data: { name, password }, success });
   }
 }

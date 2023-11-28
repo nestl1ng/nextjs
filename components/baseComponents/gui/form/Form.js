@@ -1,18 +1,21 @@
-import React, {Fragment, forwardRef, useImperativeHandle, useEffect} from "react";
+import React, {
+  Fragment,
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+} from "react";
 import useDeepCompareEffect from "use-deep-compare-effect";
 import * as PropTypes from "prop-types";
-import {useForm} from "react-hook-form";
-import {ErrorMessage} from "@hookform/error-message";
-import {password} from "../../../../constants/form";
+import { useForm } from "react-hook-form";
+import { ErrorMessage } from "@hookform/error-message";
+import { password } from "../../../../constants/form";
 
-const renderMultipleErrors = ({message, messages}) => {
+const renderMultipleErrors = ({ message, messages }) => {
   messages = messages || [message]; //todo: сделать через if?
   return (
     messages &&
     Object.entries(messages).map(([type, message]) => (
-      <Fragment key={type}>
-        {message}
-      </Fragment>
+      <Fragment key={type}>{message}</Fragment>
     ))
   );
 };
@@ -38,8 +41,16 @@ const Form = forwardRef(
   ) => {
     const formController = useForm(useFormProps);
     const {
-      formState: {errors}, setError,
-      register, watch, control, handleSubmit, trigger, reset, formState, getValues
+      formState: { errors },
+      setError,
+      register,
+      watch,
+      control,
+      handleSubmit,
+      trigger,
+      reset,
+      formState,
+      getValues,
     } = form || formController;
 
     const result = watch();
@@ -69,7 +80,7 @@ const Form = forwardRef(
       () => ({
         setError,
         reset,
-        trigger
+        trigger,
       }),
       [setError, reset, trigger]
     );
@@ -80,17 +91,16 @@ const Form = forwardRef(
         return child;
       }
 
-      let {name, rules} = child.props;
+      let { name, rules } = child.props;
       if (rules && name === "password_repeat") {
         child.props.rules = {
           ...rules,
-          ...password(() => getValues("password"))
+          ...password(() => getValues("password")),
         };
       }
       const errorData = externalErrors?.errors?.[child.props.name]
         ? externalErrors.errors
         : errors;
-
       return React.createElement(child.type, {
         ...child.props,
         onChange: (e) => {
@@ -104,15 +114,13 @@ const Form = forwardRef(
         errorData,
         error: isLocalErrors
           ? child.props.error || (
-          <ErrorMessage
-            name={child.props.name}
-            errors={
-              errorData
-            }
-            render={renderMultipleErrors}
-          />
-        )
-          : null
+              <ErrorMessage
+                name={child.props.name}
+                errors={errorData}
+                render={renderMultipleErrors}
+              />
+            )
+          : null,
       });
     }
 
@@ -123,14 +131,13 @@ const Form = forwardRef(
       ...rest,
       slots: getSlots(),
       children: newChildren,
-      onSubmit: onSubmit ? handleSubmit(onSubmit) : handleSubmit(() => {
-      })
+      onSubmit: onSubmit ? handleSubmit(onSubmit) : handleSubmit(() => {}),
     };
     return React.isValidElement(as)
       ? React.cloneElement(as, props)
       : React.createElement(as, props);
 
-    function getSlots() {
+     function getSlots() {
       if (!slots) return null;
       return Object.keys(slots).reduce((res, key) => {
         res[key] = React.Children.map(slots[key], initInput);
@@ -144,11 +151,11 @@ function addGlobalErrors(children, errors, externalErrors) {
   const errorsComponents = children
     .filter((child) => child?.props?.name)
     .map(
-      ({props: {error, name}}) =>
+      ({ props: { error, name } }) =>
         error || (
           <ErrorMessage
             name={name}
-            errors={{...errors, ...externalErrors}}
+            errors={{ ...errors, ...externalErrors }}
             key={name}
             render={renderMultipleErrors}
           />
@@ -161,7 +168,7 @@ Form.propTypes = {
   as: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.elementType,
-    PropTypes.element
+    PropTypes.element,
   ]),
   isLocalErrors: PropTypes.bool,
   isGlobalErrors: PropTypes.bool,

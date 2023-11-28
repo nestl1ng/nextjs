@@ -1,5 +1,5 @@
 const requiredMessage = "Заполните все поля";
-export const validation = {
+const validation = {
   password: {
     // required: requiredMessage,
     minLength: {
@@ -8,7 +8,6 @@ export const validation = {
     },
   },
   name: {
-    //required: requiredMessage,
     pattern: {
       value: /^[А-Яа-яЁё]+$/,
       message: "Текст только на кириллице",
@@ -34,6 +33,7 @@ export const formInputs = [
     name: "password",
     label: "Password: ",
     type: "password",
+    autoComplete: "on",
     rules: validation.password,
   },
   {
@@ -42,5 +42,4 @@ export const formInputs = [
     type: "text",
     rules: validation.message,
   },
-  { name: "btn", type: "submit" },
 ];

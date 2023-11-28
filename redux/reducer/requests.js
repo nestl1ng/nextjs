@@ -5,7 +5,7 @@ import {
   profile,
   signup,
   update,
-  addFormData,
+  sendFormData,
 } from "../../api/user";
 
 const builder = new RequestsBuilder({
@@ -24,15 +24,6 @@ const builder = new RequestsBuilder({
       if (!Object.keys(requestData.error.fields).length)
         requestData.error = null;
     },
-    // addFormPending(state) {
-    //   let lol = JSON.parse(JSON.stringify(state));
-    //   builder._fulfilled({
-    //     action: { meta: { requestId: 1 } },
-    //     state: lol,
-    //     checkData: { global: true, local: false },
-    //     thunkName: "requests/user/addFormData",
-    //   });
-    // },
   },
 })
   .addRequest({
@@ -66,16 +57,11 @@ const builder = new RequestsBuilder({
     func: logout,
   })
   .addRequest({
-    requestName: "user/addFormData",
+    requestName: "user/sendFormData",
     extraName: "addFormData",
     checkLocal: true,
-    func: addFormData,
-    onSubmit: saveDatafunc,
+    func: sendFormData,
   });
-function saveDatafunc() {
-  console.log("yes");
-  return true;
-}
 
 builder.create();
 
@@ -89,4 +75,3 @@ export default requests;
  * @returns requestData [{local:{currentRequestId, error, state}, global:{currentRequestId, error, state}}]
  */
 export const { useRequestData } = requests.selectors;
-// export const { addFormPending } = requests.actions;
