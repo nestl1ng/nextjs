@@ -33,18 +33,32 @@ export default function FormLayout() {
         } else console.log(error.response.data);
       });
   };
-  const labelInput = <LabelInput type="text" name="name" />;
+  
+  const slotsObj = {
+    inputs: formInputs.map((item, index) => (
+      <LabelInput key={index} {...item} error={errorMessages[item.name]} />
+    )),
+  };
 
   return (
     <div className="form-container">
-      <Form onSubmit={handleSubmit} className="main-form" slots={{0:"test"}}>
-        {/* <div> */}
-        {formInputs.map((item, index) => (
-          <LabelInput key={index} {...item} error={errorMessages[item.name]} />
-        ))}
-        {/* </div> */}
+      <Form
+        onSubmit={handleSubmit}
+        className="main-form"
+        slots={slotsObj}
+        as={CustomForm}
+      >
         <Button>Отправить</Button>
       </Form>
     </div>
+  );
+}
+
+function CustomForm({ slots, children, ...etc }) {
+  return (
+    <form {...etc}>
+      <div>{slots.inputs}</div>
+      {children}
+    </form>
   );
 }
